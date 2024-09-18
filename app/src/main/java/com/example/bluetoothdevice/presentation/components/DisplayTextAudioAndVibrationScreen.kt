@@ -89,14 +89,16 @@ fun VibrationAndDisplayAudio(
     ) {
         items(messages) { message ->
             // Split the message into a String array
-            val stringArray = message.message.split("/").toTypedArray()
+            val stringArray = message.message
 
             // Check if the array has the expected size and convert to respective types
-            if (stringArray.size == 4) {
+            if (stringArray.size == 0) {
                 val durasiGetaran = stringArray[0].toLongOrNull() ?: 0L
                 val amplitudoGetaran = stringArray[1].toIntOrNull() ?: 0
                 val durasiIntervalCooldown = stringArray[2].toLongOrNull() ?: 0L
                 val jarak = stringArray[3].toFloatOrNull() ?: 0f
+
+
 
                 // Vibrate and speak when the message is received
                 LaunchedEffect(message) {
