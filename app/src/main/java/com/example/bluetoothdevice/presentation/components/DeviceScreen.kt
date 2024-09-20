@@ -137,12 +137,12 @@ fun ConnectingLoaderComponent(
             Text(text = "Menghubungkan...")
 
             // If TTS is enabled, read the "Menghubungkan" message
-            if (ttsState.isTTSEnabled && !hasSpokenConnectingFailed) {
+            if (ttsState.isTTSEnabled && !hasSpokenConnecting) {
                 Log.d("DeviceScreen", "TTS Enabled")
 
                 ttsViewModel.onTextFieldValueChange("Menghubungkan")
                 ttsViewModel.textToSpeech(context)
-                hasSpokenConnectingFailed  = true
+                hasSpokenConnecting  = true
             } else {
                 Log.d("DeviceScreen", "TTS Disabled")
                 ttsViewModel.enabledTTS()
