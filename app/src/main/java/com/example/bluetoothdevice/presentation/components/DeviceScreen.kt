@@ -119,6 +119,7 @@ fun ConnectingLoaderComponent(
     ttsState : TextToSpeechState
 ){
     var hasSpokenConnecting by remember { mutableStateOf(false) }
+    var hasSpokenConnectingFailed by remember { mutableStateOf(false) }
     // Show progress when connecting
     if (stateBluetooth.isConnecting) {
         Column(
@@ -136,12 +137,12 @@ fun ConnectingLoaderComponent(
             Text(text = "Menghubungkan...")
 
             // If TTS is enabled, read the "Menghubungkan" message
-            if (ttsState.isTTSEnabled && !hasSpokenConnecting) {
+            if (ttsState.isTTSEnabled && !hasSpokenConnectingFailed) {
                 Log.d("DeviceScreen", "TTS Enabled")
 
                 ttsViewModel.onTextFieldValueChange("Menghubungkan")
                 ttsViewModel.textToSpeech(context)
-                hasSpokenConnecting = true
+                hasSpokenConnectingFailed  = true
             } else {
                 Log.d("DeviceScreen", "TTS Disabled")
                 ttsViewModel.enabledTTS()
@@ -150,21 +151,29 @@ fun ConnectingLoaderComponent(
 
         }
     }else if (stateBluetooth.errorMessage == "Connection Failed"){
-        hasSpokenConnecting = false
         Log.d("DeviceScreen", "Failed to Connect")
 
-        CircularProgressIndicator()
-        Spacer(modifier = Modifier.width(16.dp))
 
-        Text(text = "Gagal Menghubungkan ke Perangkat")
 
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .height(500.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator()
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text(text = "Gagal Menghubungkan ke Perangkat")
+        }
         // If TTS is enabled, read the "Menghubungkan" message
-        if (ttsState.isTTSEnabled && !hasSpokenConnecting) {
+        if (ttsState.isTTSEnabled && !hasSpokenConnectingFailed) {
             Log.d("DeviceScreen", "TTS Enabled")
 
             ttsViewModel.onTextFieldValueChange("Gagal Mengubungkan ke Perangkat")
             ttsViewModel.textToSpeech(context)
-            hasSpokenConnecting = true
+            hasSpokenConnectingFailed = true
         } else {
             Log.d("DeviceScreen", "TTS Disabled")
             ttsViewModel.enabledTTS()
